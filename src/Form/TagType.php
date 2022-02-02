@@ -13,10 +13,7 @@ class TagType extends AbstractType
     {
         $builder
             ->add('name')
-            // ->add('userId')
-            ->add('userId', null, ['choice_label' => 'id'])
-            //->add('notes')
-            ->add('notes', null, ['choice_label' => 'note'])
+            //->add('userId', null, ['choice_label' => 'id'])
         ;
     }
 
