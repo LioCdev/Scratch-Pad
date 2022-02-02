@@ -6,6 +6,7 @@
     <h1>Create new Note</h1>
 
     {{ include('note/_form.html.twig') }}
+    {{ include('tag/_form.html.twig') }}
 
     <a href="{{ path('note_index') }}">back to list</a>
 {% endblock %}

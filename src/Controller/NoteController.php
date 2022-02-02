@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Note;
+use App\Entity\Tag;
 use App\Form\NoteType;
+use App\Form\TagType;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,16 +37,31 @@ class NoteController extends AbstractController
         $form = $this->createForm(NoteType::class, $note);
         $form->handleRequest($request);
 
+        $tag = new Tag();
+        $formTag = $this->createForm(TagType::class, $tag);
+        $formTag->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($note);
+            // $entityManager->persist($tag);
             $entityManager->flush();
 
-            return $this->redirectToRoute('note_index', [], Response::HTTP_SEE_OTHER);
+            // return $this->redirectToRoute('note_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if ($formTag->isSubmitted() && $formTag->isValid()) {
+
+            $entityManager->persist($tag);
+            $entityManager->flush();
+
+            // return $this->redirectToRoute('note_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('note/new.html.twig', [
             'note' => $note,
+            'tag' => $tag,
             'form' => $form,
+            'formTag'=> $formTag,
         ]);
     }
 
