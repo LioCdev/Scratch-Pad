@@ -15,7 +15,7 @@ class NoteType extends AbstractType
             ->add('title')
             ->add('text')
             ->add('date')
-            ->add('userId')
+            ->add('userId', null, ['choice_label' => 'id'])
             ->add('tags')
         ;
     }
