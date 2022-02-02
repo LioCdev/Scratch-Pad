@@ -3,37 +3,28 @@
 {% block title %}Note index{% endblock %}
 
 {% block body %}
-    <h1>Note index</h1>
+    <h1>All my notes</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Text</th>
-                <th>Date</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for note in notes %}
-            <tr>
-                <td>{{ note.id }}</td>
-                <td>{{ note.title }}</td>
-                <td>{{ note.text }}</td>
-                <td>{{ note.date ? note.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('note_show', {'id': note.id}) }}">show</a>
-                    <a href="{{ path('note_edit', {'id': note.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <pre>
+        {{ dump(notes) }}
+    </pre>
+    <div class="container">
+        <div class="d-flex flex-row justify-content-around ">
+            {% for note in notes %}
+                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ note.title }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">'{{ note.text }}''</p>
+                        <h6 class="card-title">tags</h5>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
-    <a href="{{ path('note_new') }}">Create new</a>
+    <a href="{{ path('note_new') }}">
+        <button type="button" class="btn btn-success">Add a note</button>
+    </a>
 {% endblock %}

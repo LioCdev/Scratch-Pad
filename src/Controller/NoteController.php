@@ -7,11 +7,13 @@ use App\Entity\Tag;
 use App\Form\NoteType;
 use App\Form\TagType;
 use App\Repository\NoteRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/note")
@@ -24,14 +26,14 @@ class NoteController extends AbstractController
     public function index(NoteRepository $noteRepository): Response
     {
         return $this->render('note/index.html.twig', [
-            'notes' => $noteRepository->findAll(),
+            'notes' => $noteRepository->findBy(['userId' => $this->getUser()->getId()])
         ]);
     }
 
     /**
      * @Route("/new", name="note_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $note = new Note();
         $form = $this->createForm(NoteType::class, $note);
@@ -41,7 +43,11 @@ class NoteController extends AbstractController
         $formTag = $this->createForm(TagType::class, $tag);
         $formTag->handleRequest($request);
 
+        $submitDate = new DateTime();
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $note->setUserId($security->getUser());
+            $note->setDate($submitDate->setTimestamp(time()));
             $entityManager->persist($note);
             $entityManager->flush();
 
@@ -49,7 +55,7 @@ class NoteController extends AbstractController
         }
 
         if ($formTag->isSubmitted() && $formTag->isValid()) {
-
+            $tag->setUserId($security->getUser());
             $entityManager->persist($tag);
             $entityManager->flush();
 
