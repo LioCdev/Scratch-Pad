@@ -1,4 +1,12 @@
 {{ form_start(formTag) }}
-    {{ form_widget(formTag) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="tag_form">
+    <div class="d-flex flex-column align-items-center">
+        <div class="col mt-3">
+            {{ form_label(formTag.name, 'Enter a new Tag name:') }}
+            {{ form_widget(formTag.name) }}
+        </div>
+        <button class="btn btn-success mt-3">{{ button_label|default('Save') }}</button>
+
+    </div>
+</div>
 {{ form_end(formTag) }}

@@ -16,14 +16,7 @@ class NoteType extends AbstractType
         $builder
             ->add('title')
             ->add('text')
-            // ->add('date')
-            // ->add('userId', null, ['choice_label' => 'id'])
             ->add('tags', null, ['choice_label' => 'name'])
-            // ->add('tags', TagType::class, ['label' => false])
-            // ->add('tags', CollectionType::class, [
-            //     'entry_type' => TagType::class,
-            //     'entry_options' => ['label' => false],
-            // ]);
         ;
     }
 

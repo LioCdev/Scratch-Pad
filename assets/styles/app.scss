@@ -1,5 +1,38 @@
 @import "~bootstrap/scss/bootstrap";
 
+$primary: #0084E4;
+$green: #65d461;
+
 body {
-    background-color: rgb(211, 211, 211);
+    background-color:#FAFAFA;
+}
+
+li {
+    list-style: none;
+}
+
+.login_buttons {
+    display: flex;
+
+        .btn {
+            margin: 0.2rem;
+        }
+}
+
+.example-wrapper {
+    text-align: center;
+    margin-top: 4rem;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.card {
+    margin: 1rem;
+}
+
+.btn_new {
+    margin-left: 1rem;
 }

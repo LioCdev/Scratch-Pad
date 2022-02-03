@@ -7,17 +7,21 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('login') }}" method="post">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}"/>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password"/>
-
-
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        <input type="hidden" name="_target_path" value="{{ path('note_index') }}"/>
-
-        <button type="submit">login</button>
-    </form>
+    <div class="container">
+        <div class"form-group d-inline">
+            <form action="{{ path('login') }}" method="post">
+                <div class="d-flex justify-content-center">
+                    <div class="d-flex flex-column ">
+                        <label class="mt-4" for="username">Email:</label>
+                        <input class="form-control " type="text" id="username" name="_username" value="{{ last_username }}"/>
+                        <label class="mt-4" for="password">Mot de passe:</label>
+                        <input class="form-control" type="password" id="password" name="_password"/>
+                        <button class="btn btn-dark mt-4" type="submit">Enter</button>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        <input type="hidden" name="_target_path" value="{{ path('note_index') }}"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
