@@ -67,27 +67,24 @@ class NoteController extends AbstractController
         $formTag = $this->createForm(TagType::class, $tag);
         $formTag->handleRequest($request);
 
-        $tagAssociated = new Tag();
-
         $submitDate = new DateTime();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $tag = $tagRepository->findOneBy(['id' => intval($request->request->get('note')['tags'][0])]);
             $note->addTag($tag);
-
-
             $note->setUserId($security->getUser());
             $note->setDate($submitDate->setTimestamp(time()));
 
             $entityManager->persist($note);
             $entityManager->flush();
 
-            // return $this->redirectToRoute('note_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('note_index', [], Response::HTTP_SEE_OTHER);
         }
 
         if ($formTag->isSubmitted() && $formTag->isValid()) {
             $tag->setUserId($security->getUser());
+            
             $entityManager->persist($tag);
             $entityManager->flush();
 

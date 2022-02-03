@@ -3,36 +3,44 @@
 {% block title %}Note index{% endblock %}
 
 {% block body %}
-    <h1>All my notes</h1>
-
-    <pre>
-        {{ dump(tags) }}
-    </pre>
-    <div class="button__filter">
-    {% for tag in tags %}
-
-    <a class="btn" href="{{ path("note_byTag", {'id': tag.id}) }}">{{ tag.name }}</a>
-    {% endfor %}
-
+    <div class="container">
+        <h1>All my notes</h1>
     </div>
-
     <div class="container">
         <div class="d-flex flex-row justify-content-around ">
-            {% for note in notes %}
-                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-                    <div class="card-header">
-                        <h5 class="card-title">{{ note.title }}</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">'{{ note.text }}''</p>
-                        <h6 class="card-title">tags</h5>
-                    </div>
-                </div>
-            {% endfor %}
+            <div class="button__filter">
+                {% for tag in tags %}
+                    <a class="btn" href="{{ path("note_byTag", {'id': tag.id}) }}">
+                        <button type="button" class="btn btn-dark">{{ tag.name }}</button>
+                    </a>
+                {% endfor %}
+            </div>
         </div>
     </div>
-
-    <a href="{{ path('note_new') }}">
-        <button type="button" class="btn btn-success">Add a note</button>
-    </a>
+    <div class="container">
+        <div class="d-flex flex-row justify-content-around ">
+            <div class="row">
+                {% for note in notes %}
+                    <div class="col">
+                        <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                            <div class="card-header">
+                                <h5 class="card-title">{{ note.title }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">'{{ note.text }}''</p>
+                                <h6 class="card-title">tags</h5>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <a href="{{ path('note_new') }}">
+            <div class="btn_new">
+                <button type="button" class="btn btn-success">Add a note</button>
+            </div>
+        </a>
+    </div>
 {% endblock %}

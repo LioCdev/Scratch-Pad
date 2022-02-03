@@ -44,7 +44,7 @@ class TagController extends AbstractController
 
         return $this->renderForm('tag/new.html.twig', [
             'tag' => $tag,
-            'form' => $form,
+            'formTag' => $form,
         ]);
     }
 
