@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Note;
 use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,6 +19,7 @@ class TagRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Tag::class);
     }
+
 
     // /**
     //  * @return Tag[] Returns an array of Tag objects

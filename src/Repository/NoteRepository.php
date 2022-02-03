@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Note;
+use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,17 @@ class NoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Note::class);
     }
 
+    public function searchByTag()
+    {
+        return $this->createQueryBuilder('n')
+            ->leftJoin(Tag::class, 't', 'WITH', 'n.id = t.id')
+
+
+
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     // /**
     //  * @return Note[] Returns an array of Note objects
     //  */
