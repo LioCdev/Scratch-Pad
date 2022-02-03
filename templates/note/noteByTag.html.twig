@@ -5,16 +5,6 @@
 {% block body %}
     <h1>All my notes</h1>
 
-    <pre>
-        {{ dump(tags) }}
-    </pre>
-    <div class="button__filter">
-    {% for tag in tags %}
-
-    <a class="btn" href="{{ path("note_byTag", {'id': tag.id}) }}">{{ tag.name }}</a>
-    {% endfor %}
-
-    </div>
 
     <div class="container">
         <div class="d-flex flex-row justify-content-around ">

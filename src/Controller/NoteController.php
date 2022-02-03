@@ -7,11 +7,14 @@ use App\Entity\Tag;
 use App\Form\NoteType;
 use App\Form\TagType;
 use App\Repository\NoteRepository;
+use App\Repository\TagRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/note")
@@ -21,17 +24,40 @@ class NoteController extends AbstractController
     /**
      * @Route("/", name="note_index", methods={"GET"})
      */
-    public function index(NoteRepository $noteRepository): Response
+    public function index(NoteRepository $noteRepository, TagRepository $tagRepository): Response
     {
         return $this->render('note/index.html.twig', [
-            'notes' => $noteRepository->findAll(),
+            'notes' => $noteRepository->findBy(['userId' => $this->getUser()->getId()]),
+            'tags' => $tagRepository->findBy(['userId' => $this->getUser()->getId()])
+        ]);
+    }
+
+    /**
+     * @Route("/tag/{id}", name="note_byTag", methods={"GET"})
+     */
+    public function noteByTag(Tag $tag, TagRepository $tagRepository ,NoteRepository $noteRepository): Response
+    {
+
+        $notesByTag = $tag->getNotes();
+
+        $notes = [];
+        foreach ($notesByTag as $noteByTag) {
+
+            if ($noteByTag->getUserId()->getId() === $this->getUser()->getId()) {
+                $notes[] = $noteByTag;
+            }
+        }
+
+        return $this->render('note/noteByTag.html.twig', [
+            'notes' => $notes
+
         ]);
     }
 
     /**
      * @Route("/new", name="note_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Security $security, TagRepository $tagRepository): Response
     {
         $note = new Note();
         $form = $this->createForm(NoteType::class, $note);
@@ -41,7 +67,19 @@ class NoteController extends AbstractController
         $formTag = $this->createForm(TagType::class, $tag);
         $formTag->handleRequest($request);
 
+        $tagAssociated = new Tag();
+
+        $submitDate = new DateTime();
+
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $tag = $tagRepository->findOneBy(['id' => intval($request->request->get('note')['tags'][0])]);
+            $note->addTag($tag);
+
+
+            $note->setUserId($security->getUser());
+            $note->setDate($submitDate->setTimestamp(time()));
+
             $entityManager->persist($note);
             $entityManager->flush();
 
@@ -49,7 +87,7 @@ class NoteController extends AbstractController
         }
 
         if ($formTag->isSubmitted() && $formTag->isValid()) {
-
+            $tag->setUserId($security->getUser());
             $entityManager->persist($tag);
             $entityManager->flush();
 
